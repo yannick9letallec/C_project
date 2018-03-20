@@ -1,0 +1,66 @@
+// VARS
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+color_success = green
+
+
+// IMPORTS
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+@import "./front/stylus/common.styl"
+
+
+// ADMIN PART
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+body
+	font-family "Titillium Web"
+
+.admin
+	.adminHeader
+		position relative
+		color colormain
+		border-bottom 1px solid black
+		padding padding_medium
+		h1
+			font-size 3em
+
+	.adminContenu
+		display inline-flex
+		flex-direction row
+		width 100%
+
+		div
+			cursor pointer
+			padding padding_medium
+
+		.nav
+			display flex
+			flex-direction column
+			flex-grow 3
+			width auto
+			height 50%
+			background-color red
+			padding padding_small
+	
+		.contenu	
+			background-color olive
+			width 100%
+
+	.deconnexion
+		position absolute
+		cursor pointer
+		top 5px
+		right 5px
+
+.listing
+	position relative
+
+.ajouter
+	position absolute
+	top 10px
+	right 10px
+
+.msg.success
+	background-color color_success
+	

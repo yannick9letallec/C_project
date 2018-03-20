@@ -1,0 +1,72 @@
+- 
+	var realData,
+		route = "/admin/" + action,
+		submitValue
+
+	Object.keys( data ).length === 0 ? realData = false : realData = true
+
+	if( action === "actuCompteUtilisateur" ){
+		submitValue = "Actualiser"
+		submitAction = "return actuCompteUtilisateurForm( event );"
+	} else {
+		submitValue = "Valider"
+		submitAction = "return validCompteUtilisateurForm( event );"
+	}
+	console.dir( roles.length ) 
+
+.titreForm
+	h2
+	.
+		GEREZ VOTRE COMPTE
+
+.createAccountDiv
+	.title Créer votre compte :
+		
+	form( action=route enctype="multipart/form-data" accept-charset="utf-8" method="post" name="logForm" target="_self" autocomplete="on" onsubmit=submitAction )
+		.login 
+			label( for="login" ) *Login : 
+			input( value=data.login type="text" id="login" name="login" placeholder="votre login ... " onchange="checkLogin( this )" required autofocus )
+
+		if realData
+			.prenom
+				label( for="prenom" ) Prénom : 
+				input( value=data.prenom type="text" id="prenom" name="prenom" placeholder="Votre prénom" )
+			.nom
+				label( for="nom" ) Nom : 
+				input( value=data.nom type="text" id="nom" name="nom" placeholder="Votre nom" )
+			.roles Sélectionner votre rôle :
+				br
+				each role in roles
+					input( type="checkbox" id="role" name=role )
+					label( for=role )= role	
+					br
+
+		.email 
+			label( for="email" ) *Email : 
+			input( value=data.email type="email" id="email" name="email" placeholder="votre email ... " required autofocus )
+		.passwd 
+			label( for="password" ) *Password : 
+			input( value=data.pwd type="password" id="pwd" name="pwd" placeholder="votre mot de passe ... " required )
+		.passwdCfm 
+			label( for="passwordCfm" ) *Confirmer votre mot de passe : 
+			input( value=data.pwd type="password" id="pwdCfm" name="pwdCfm" placeholder="Confirmez votre mot de passe ... " required )
+	
+		if realData
+			.image
+				label( for="image" ) Image : 
+				input( value=data.image type="file" id="image" name="image" placeholder="choisissez votre image" )
+			.facebook
+				label( for="facebook" ) Facebook : 
+				input( value=data.facebook type="text" id="facebook" name="facebook" placeholder="Votre page facebook" )
+			.twitter
+				label( for="twitter" ) Twitter : 
+				input( value=data.twitter type="text" id="twitter" name="twitter" placeholder="Votre page twitter" )
+		
+
+		if !realData
+			.additionnalInformation Vous pourrez compléter et / ou modifier ces informations plus tard
+	
+		.submitCreateAccountForm
+			if !realData
+				span.link( class="cancelCreateAccountForm" onclick="cancelCreateAccountForm()" ) Annuler
+			input( type="submit" id="submitCreateAccountForm" value=submitValue )

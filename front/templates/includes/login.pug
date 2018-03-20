@@ -1,0 +1,19 @@
+.logDiv
+	.title Connexion :
+		
+	form( action="/admin/log" enctype="multipart/form-data" accept-charset="utf-8" method="post" name="logForm" target="_self" autocomplete="on" )
+		.login 
+			label( for="login" ) Login : 
+			input( type="text" id="login" name="login" placeholder="votre login ... " required autofocus )
+		.passwd 
+			label( for="password" ) Password : 
+			input( type="password" id="pwd" name="pwd" placeholder="votre mot de passe ... " required )
+		.submitLogForm
+			.rememberMe
+				input( type="checkbox" id="rememberMe" name="rememberMe" )
+				label( for="rememberMe" ) Se souvenir de moi
+
+			span.createAccount( onclick="displayCreateAccountForm()" ) Créer un compte
+			input( type="submit" id="submitLogForm" value="Se Connecter" )
+			.forgotPassword 
+				a( href="" ) Mot de passe oublié

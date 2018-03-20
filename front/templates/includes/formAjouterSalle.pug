@@ -1,0 +1,48 @@
+.creationSalle
+	.title AJOUTER UNE SALLE
+		
+	form( action="/admin/validAjouterSalle" enctype="multipart/form-data" accept-charset="utf-8" method="post" name="logForm" target="_self" autocomplete="on" onsubmit="javascript:validAjouterSalle( event );" novalidate )
+		.login 
+			label( for="nom" ) *Nom : 
+			input( value=data.nom type="text" id="nom" name="nom" placeholder="Nom de la salle ... " onchange="checkNomSalle( this )" required autofocus )
+		.numero
+			label( for="numero" ) Numéro de voie : 
+			input( value=data.numero type="text" id="numero" name="numero" )
+		.type_voie
+			label( for="type_voie" ) Type de voie : 
+			select( id="type_voie" name="type_voie" )
+				// each role in roles option( type="checkbox" id="role" name=role )
+		.libelle_supplementaire
+			label( for="libelle_supplementaire" ) *Libellé Supplémentaire : 
+			input( value=data.libelle_supplementaire type="text" id="libelle_supplementaire" name="libelle_supplementaire" placeholder="Ex : Bâtiment C / Résidence des Ajoncs ... " )
+		.code_postal 
+			label( for="code_postal" ) *Code Postal : 
+			input( value=data.code_postal type="number" id="code_postal" name="code_postal"  )
+		.ville 
+			label( for="ville" ) *Ville : 
+			input( value=data.ville type="text" id="ville" name="ville"  )
+		.pays
+			label( for="pays" ) Pays : 
+			input( value=data.pays type="text" id="pays" name="pays" placeholder="FRANCE" disabled )
+	
+		.image
+			label( for="image" ) Image : 
+			input( value=data.image type="file" id="image" name="image" placeholder="choisissez votre image" )
+
+		.nb_place
+			label( for="nb_place" ) Pays : 
+			input( value=data.nb_place type="number" id="nb_place" name="nb_place" )
+
+		.equipement
+			textarea( placeholder="Ici, décrivez les équipements que l'on peut trouver dans la salle" )
+
+		.web
+			label( for="web" ) Lien Internet : 
+			input( value=data.web type="text" id="web" name="web" placeholder="http://..." )
+			.twitter
+				label( for="twitter" ) Twitter : 
+				input( value=data.twitter type="text" id="twitter" name="twitter" placeholder="Votre page twitter" )
+		
+		.submitAjouterSalleForm
+			input( type="submit" id="submitCreateAccountForm" value="Ajouter" )
+

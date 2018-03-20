@@ -1,0 +1,148 @@
+doctype html
+html
+	include ./includes/head.pug
+
+	body
+		h1.title CONFERENCES
+		.wrapper
+			include ./includes/login.pug
+	//-
+		include ./includes/header.pug
+
+		h1 HEADERS in THE place
+		- let zoom = true
+		div( id=zoom? "zoombida" : "zoombido" ) ----------------- 
+
+		- let classes = [ "un", "deux", "trois" ]
+		a.classes( href="http://www.google.com" class=classes ) GooGle
+
+		div( escaped="<code>" onclick="test()" ) 111
+		div( unescaped!="<code>" ) 222
+
+	// include ./includes/footer.pug
+
+	script( type="text/javascript" ).
+		centerForms()
+
+		// center CX forms
+		function centerForms(){
+			var screen_h = window.innerHeight
+			var wrapper = document.querySelector( ".wrapper" )
+			var wrapper_h = wrapper.getBoundingClientRect()[ "height" ]
+
+			wrapper.style.position = "relative"
+			wrapper.style.top = ( screen_h / 2 ) - ( wrapper_h / 2 ) + "px"
+		}
+
+
+		// unusefull as reuired attr makes the job, browser handle msg to user ( handling language ? )
+		// oninput="javascript:activateSubmit()" 
+		function activateSubmit( event ){
+			var isLogFill = document.querySelector( "#login" ).value
+			var isPwdFill = document.querySelector( "#pwd" ).value
+
+			var el = document.querySelector( "#submitLogForm" )
+			if( isLogFill && isPwdFill ){
+				el.disabled = false
+			} else {
+				el.disabled = true
+			}
+		}
+
+		function displayCreateAccountForm( ){
+
+			var xhr = new XMLHttpRequest()
+
+			xhr.onreadystatechange = function( event ){
+				if( this.readyState === 4 && this.status === 200 ){
+					console.log( "OK XHR" ) 
+					var el = document.querySelector( ".wrapper" )
+					el.innerHTML = this.responseText
+				
+					centerForms()
+				}
+			}
+
+			xhr.open( "get", "/admin/createAccount", true )
+			xhr.send( null )
+		}
+
+		function cancelCreateAccountForm( ){
+			var xhr = new XMLHttpRequest()
+
+			xhr.onreadystatechange = function( event ){
+				if( this.readyState === 4 && this.status === 200 ){
+					console.log( "OK XHR" ) 
+					var el = document.querySelector( ".wrapper" )
+					el.innerHTML = this.responseText
+				
+					centerForms()
+				}
+			}
+
+			xhr.open( "get", "/admin/log", true )
+			xhr.send( null )
+		}
+		
+		function validCompteUtilisateurForm( event ){
+			var pwd = document.querySelector( "#pwd" ).value
+			var pwdCfm = document.querySelector( "#pwdCfm" ).value
+
+			if( pwd !== pwdCfm ) {
+				document.querySelector( ".additionnalInformation" ).innerText = "Les mots de passe diffèrent"
+				return false
+			} else {
+				return true
+			}
+		}	
+
+		function checkLogin( event ){
+			var login = document.querySelector( "#login" ).value  
+
+			var data = new FormData()
+			data.append( "login", login )
+
+			if( login ){
+				var xhr = new XMLHttpRequest( )
+
+				xhr.onreadystatechange = function( event ){
+					if( this.readyState === 4 && this.status === 200 ){
+						var el = document.querySelector( ".additionnalInformation" )
+						el.innerHTML = this.responseText
+					}
+				}
+
+				xhr.onprogress = function( event ){
+					displayProgressBar( event, ".createAccountDiv form" )
+				}
+
+				xhr.open( "post", "/admin/checkLogin", true )
+				xhr.send( data )
+			}
+		}
+
+		var test = "TEST" 
+
+		function displayProgressBar( percent, _target ){
+			var div = document.createElement( "div" )
+			div.classList.add( "progressDiv" )
+
+			var target = document.querySelector( _target )
+
+			var parent = target.parentNode
+			parent.insertBefore( div, target )
+
+			var t = event.total
+			var l = event.loaded
+
+			div.style.width = ( ( t / l ) * 100 ) + "%"
+
+			var del_el = document.querySelector( ".progressDiv" )
+
+			if( t / l === 1 ) {
+				setTimeout.call( this, function( parent, del_el) {
+					document.querySelector( ".createAccountDiv" ).removeChild( div )
+				}, 2000 )
+			}
+			
+		}

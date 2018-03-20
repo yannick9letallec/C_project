@@ -1,0 +1,51 @@
+body {
+  font-family: "Titillium Web";
+}
+.admin .adminHeader {
+  position: relative;
+  color: #000;
+  border-bottom: 1px solid #000;
+  padding: 10px;
+}
+.admin .adminHeader h1 {
+  font-size: 3em;
+}
+.admin .adminContenu {
+  display: inline-flex;
+  flex-direction: row;
+  width: 100%;
+}
+.admin .adminContenu div {
+  cursor: pointer;
+  padding: 10px;
+}
+.admin .adminContenu .nav {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 3;
+  width: auto;
+  height: 50%;
+  background-color: #f00;
+  padding: 5px;
+}
+.admin .adminContenu .contenu {
+  background-color: #808000;
+  width: 100%;
+}
+.admin .deconnexion {
+  position: absolute;
+  cursor: pointer;
+  top: 5px;
+  right: 5px;
+}
+.listing {
+  position: relative;
+}
+.ajouter {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.msg.success {
+  background-color: #008000;
+}

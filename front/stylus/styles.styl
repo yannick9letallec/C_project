@@ -1,0 +1,98 @@
+// IMPORTS
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+@import "./front/stylus/common.styl"
+
+
+// DECLARATIONS
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+body
+	font-family "Titillium Web"
+	background-image url( ./img/Conferences_1.jpg )
+	background-repeat no-repeat
+	background-attachment fixed
+	background-position left bottom
+	background-size cover
+
+h1.title
+	font-size 2em
+	color red
+	padding padding_medium
+
+.header_text
+	text-align left
+
+.footer
+	width 100%
+	text-align center
+
+/*
+* LOGIN FORM
+*/
+	
+.logDiv, .createAccountDiv
+	border border
+	border_radius( 12px )
+	margin 0 auto
+	width 50%
+	background-color white
+	background-size auto
+	position relative
+
+	.title
+		padding padding_medium
+		border_radius( 12px 12px 0px 0px )
+		border-bottom border
+		background-color olive
+		color white
+		font-weight bold
+		
+
+	.login, .passwd, .passwdCfm, .email, .facebook, .twitter, .image, .nom, .prenom
+		padding padding_medium
+		width 100%
+
+	input
+		padding padding_medium
+		width 100%
+		margin-top 8px
+
+	.forgotPassword
+		padding 2px
+		font-size 0.8em
+
+	.createAccount, .cancelCreateAccountForm
+		padding padding_medium
+		position absolute
+		left 0px
+		bottom 0px
+		cursor pointer
+
+	.submitLogForm, .submitCreateAccountForm 
+		text-align right	
+		padding padding_medium
+		input 
+			width initial
+
+	.additionnalInformation
+		padding padding_big	
+		background-color ivory
+		color orange
+		font-size 0.9em
+		text-align center
+
+	.rememberMe
+		position absolute
+		text-align left
+
+.progressDiv
+		width 0%
+		height 5px
+		background-color green
+
+.link
+		text-decoration underline
+		cursor pointer
+
+

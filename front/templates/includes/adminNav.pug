@@ -1,0 +1,27 @@
+.adminNav
+	.compteUtilisateur( onclick="javascript:openVue( 'vueCompteUtilisateur' );" ).
+		Mon Compte
+	.ajoutezSalle( onclick="javascript:openVue( 'vueSalles' );" ).
+		Gérez vos salle 
+	.ajoutezConferance( onclick="javascript:openVue( 'vueAjoutConference' );" ).
+		Ajoutez une Conférence
+	.reglezPreferences( onclick="javascript:openVue( 'vuePreferences' );" ).
+		Réglez vos Préférences
+
+
+script( type="text/javascript" ).
+	function openVue( vue ){
+		var xhr = new XMLHttpRequest( vue )
+	
+		var path = "/admin/" + vue
+
+		xhr.onreadystatechange = function( event ){
+			if( this.status === 200 && this.readyState === 4 ){
+				var el = document.querySelector( ".adminContenu .contenu" )
+				el.innerHTML = this.responseText
+			}
+		}
+
+		xhr.open( "GET", path )
+		xhr.send()
+	}

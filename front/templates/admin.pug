@@ -1,0 +1,108 @@
+include ./includes/adminHead.pug
+
+.admin
+	.adminHeader
+		h1 Confrance
+		.
+			Votre source de connaissance
+
+		span.deconnexion( onclick="javascript:disconnect();" ) Déconnexion
+
+
+	.adminContenu
+		.nav
+			include ./includes/adminNav.pug
+
+		.contenu
+
+.msg
+
+
+script( type="text/javascript" ). 
+	function disconnect() { 
+		// remove cookies ( rememerMe, hash ) 
+		var cookies = document.cookie
+		var pos = cookies.indexOf( "rememberMe" )
+		
+		
+
+		console.log( "cookies : " + document.cookie ) 
+	}
+
+	function actuCompteUtilisateurForm( event ){
+		event.preventDefault()
+
+		console.log( "[ OK ] : ACTUUUUUUUUUUUUUU" ) 
+
+		var xhr = new XMLHttpRequest()
+
+		xhr.onreadystatechange = function( event ){
+			if( this.status === 200 && this.readyState === 4 ) {
+				displayMsgBox( "success", this.responseText, 5000 )
+			}
+		}
+
+		xhr.open( "POST", "/admin/actuCompteUtilisateur", true )
+		xhr.send()
+	}
+	
+	function displayMsgBox( level, msg, delay ){
+		var el_copy,
+			el = document.querySelector( ".msg" )
+		el.classList.add( level )
+		el.innerHTML = msg			
+
+		el_copy = el.cloneNode( true )
+	
+		var parent = document.querySelector( ".contenu" )
+
+		parent.appendChild( el_copy )
+		parent.insertBefore( el, parent.firstChild )
+
+		setTimeout( function() {
+			parent.removeChild( el_copy )
+			el.innerHTML = ""
+			el.classList.remove( "success" )
+			document.body.appendChild( el )
+		}, delay )
+	}
+
+	// SALLES
+	//-/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	function ajouterSalle( event ){
+		var xhr = new XMLHttpRequest()
+		
+		xhr.onreadystatechange = function( event ){
+			if( this.status === 200 && this.readyState === 4 ) {
+				document.querySelector( ".contenu" ).innerHTML = this.responseText
+			}
+		}
+
+		xhr.open( "GET", "/admin/ajouterSalle", true )
+		xhr.send()
+	}
+
+	function validAjouterSalle( event ){
+		event.preventDefault()
+
+		console.log( "[ OK ] : SALLLLLLLLLLLLLLE" ) 
+		var xhr = new XMLHttpRequest()
+		
+		xhr.onreadystatechange = function( event ){
+			if( this.status === 200 && this.readyState === 4 ) {
+				displayMsgBox( "success", this.responseText, 5000 )
+			}
+		}
+
+		xhr.open( "POST", "/admin/validAjouterSalle", true )
+		xhr.setRequestHeader( "Upgrade-Insecure-Requests", 0 )
+
+		xhr.send()
+	}
+	function checkNomSalle( nom ){
+
+	}
+	
+
+

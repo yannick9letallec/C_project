@@ -1,0 +1,127 @@
+body {
+  font-family: "Titillium Web";
+  background-image: url("./img/Conferences_1.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: left bottom;
+  background-size: cover;
+}
+h1.title {
+  font-size: 2em;
+  color: #f00;
+  padding: 10px;
+}
+.header_text {
+  text-align: left;
+}
+.footer {
+  width: 100%;
+  text-align: center;
+}
+/*
+* LOGIN FORM
+*/
+.logDiv,
+.createAccountDiv {
+  border: 1px solid;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -o-border-radius: 12px;
+  -ms-border-radius: 12px;
+  border-radius: 12px;
+  margin: 0 auto;
+  width: 50%;
+  background-color: #fff;
+  background-size: auto;
+  position: relative;
+}
+.logDiv .title,
+.createAccountDiv .title {
+  padding: 10px;
+  -webkit-border-radius: 12px 12px 0px 0px;
+  -moz-border-radius: 12px 12px 0px 0px;
+  -o-border-radius: 12px 12px 0px 0px;
+  -ms-border-radius: 12px 12px 0px 0px;
+  border-radius: 12px 12px 0px 0px;
+  border-bottom: 1px solid;
+  background-color: #808000;
+  color: #fff;
+  font-weight: bold;
+}
+.logDiv .login,
+.createAccountDiv .login,
+.logDiv .passwd,
+.createAccountDiv .passwd,
+.logDiv .passwdCfm,
+.createAccountDiv .passwdCfm,
+.logDiv .email,
+.createAccountDiv .email,
+.logDiv .facebook,
+.createAccountDiv .facebook,
+.logDiv .twitter,
+.createAccountDiv .twitter,
+.logDiv .image,
+.createAccountDiv .image,
+.logDiv .nom,
+.createAccountDiv .nom,
+.logDiv .prenom,
+.createAccountDiv .prenom {
+  padding: 10px;
+  width: 100%;
+}
+.logDiv input,
+.createAccountDiv input {
+  padding: 10px;
+  width: 100%;
+  margin-top: 8px;
+}
+.logDiv .forgotPassword,
+.createAccountDiv .forgotPassword {
+  padding: 2px;
+  font-size: 0.8em;
+}
+.logDiv .createAccount,
+.createAccountDiv .createAccount,
+.logDiv .cancelCreateAccountForm,
+.createAccountDiv .cancelCreateAccountForm {
+  padding: 10px;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  cursor: pointer;
+}
+.logDiv .submitLogForm,
+.createAccountDiv .submitLogForm,
+.logDiv .submitCreateAccountForm,
+.createAccountDiv .submitCreateAccountForm {
+  text-align: right;
+  padding: 10px;
+}
+.logDiv .submitLogForm input,
+.createAccountDiv .submitLogForm input,
+.logDiv .submitCreateAccountForm input,
+.createAccountDiv .submitCreateAccountForm input {
+  width: initial;
+}
+.logDiv .additionnalInformation,
+.createAccountDiv .additionnalInformation {
+  padding: 15px;
+  background-color: #fffff0;
+  color: #ffa500;
+  font-size: 0.9em;
+  text-align: center;
+}
+.logDiv .rememberMe,
+.createAccountDiv .rememberMe {
+  position: absolute;
+  text-align: left;
+}
+.progressDiv {
+  width: 0%;
+  height: 5px;
+  background-color: #008000;
+}
+.link {
+  text-decoration: underline;
+  cursor: pointer;
+}
