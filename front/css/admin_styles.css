@@ -32,6 +32,12 @@ body {
   background-color: #808000;
   width: 100%;
 }
+.admin .adminContenu .contenu input {
+  position: relative;
+}
+.admin .adminContenu .contenu div.autocomplete {
+  position: absolute;
+}
 .admin .deconnexion {
   position: absolute;
   cursor: pointer;

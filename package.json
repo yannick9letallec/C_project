@@ -9,6 +9,7 @@
     "express": "^4.16.2",
     "jquery": "^1.9.1",
     "popper.js": "^1.12.9",
+    "sanitize-html": "^1.18.2",
     "stylus": "^0.54.5"
   },
   "devDependencies": {
