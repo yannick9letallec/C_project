@@ -1,4 +1,4 @@
-include ./includes/adminHead.pug
+include ./blocks/adminHead.pug
 
 .admin
 	.adminHeader
@@ -11,7 +11,7 @@ include ./includes/adminHead.pug
 
 	.adminContenu
 		.nav
-			include ./includes/adminNav.pug
+			include ./blocks/adminNav.pug
 
 		.contenu
 
@@ -49,6 +49,13 @@ script( type="text/javascript" ).
 	function displayMsgBox( level, msg, delay ){
 		var el_copy,
 			el = document.querySelector( ".msg" )
+		
+		if( !el ){
+			el = document.createElement( "div" )
+			el.classList.add( "msg" )
+			document.body.appendChild( el )
+		}
+
 		el.classList.add( level )
 		el.innerHTML = msg			
 
@@ -82,11 +89,15 @@ script( type="text/javascript" ).
 		xhr.open( "GET", "/admin/ajouterSalle", true )
 		xhr.send()
 	}
-
 	function validAjouterSalle( event ){
 		event.preventDefault()
 
-		console.log( "[ OK ] : SALLLLLLLLLLLLLLE" ) 
+		var f = document.querySelector( "[name=formSalle]" ),
+			fd = new FormData( f )
+
+		fd.append( "latitude", document.querySelector( "#latitude" ).value )
+		fd.append( "longitude", document.querySelector( "#longitude" ).value )
+
 		var xhr = new XMLHttpRequest()
 		
 		xhr.onreadystatechange = function( event ){
@@ -98,11 +109,121 @@ script( type="text/javascript" ).
 		xhr.open( "POST", "/admin/validAjouterSalle", true )
 		xhr.setRequestHeader( "Upgrade-Insecure-Requests", 0 )
 
-		xhr.send()
+		xhr.send( fd )
+	}
+	function supprimerSalle( id_salle ){
+
 	}
 	function checkNomSalle( nom ){
 
 	}
-	
+	function chercherVilleDepuisCodePostal( event ){
+		var autocomplete = document.querySelector( ".autocomplete" ) 
+		if( autocomplete ){
+			autocomplete.parentNode.removeChild( autocomplete )
+		}
+		if( event.value.length > 2 ){
+			var xhr = new XMLHttpRequest()
 
+			xhr.onreadystatechange = function( event ){
+				if( this.status === 200 && this.readyState === 4 ) {
+					var res = JSON.parse( this.responseText )
 
+					var parent = document.querySelector( ".code_postal" )
+					var div = document.createElement( "div" )
+					div.classList.add( "autocomplete" )
+
+					if( res.hasOwnProperty( "msg" ) ) {
+						div.textContent = res.msg
+					} else {
+						var l = res.length
+						for( var i = 0; i < l; i ++ ){
+							var item = document.createElement( "div" )
+
+							item.dataset.lng = res[ i ].longitude
+							item.dataset.lat = res[ i ].latitude
+
+							item.addEventListener( "click", function( event ){
+								console.dir( this ) 
+
+								var cp = document.querySelector( "#code_postal" )
+								var ville = document.querySelector( "#ville" )
+
+								cp.value = +this.children[ 0 ].innerText
+								ville.value = this.children[ 1 ].innerText
+
+								// update map
+								var position = {
+									coords : {
+										latitude : this.dataset.lat,
+										longitude : this.dataset.lng
+									}
+								}
+
+								actualiseOSM( position )
+							})
+
+							var cp = document.createElement( "span" )
+							cp.innerText = res[ i ].code_postal + " "
+
+							var ville = document.createElement( "span" )
+							ville.innerText = " " + res[ i ].nom_commune
+							
+							item.appendChild( cp )
+							item.appendChild( ville )
+							div.appendChild( item )
+						}
+					}
+					// display results
+					parent.appendChild( div )
+				}
+			}
+			xhr.open( "POST", "/admin/codePostalVersAdresses", true )
+
+			var data = new FormData()
+			data.append( "cp", event.value )
+			xhr.send( data )
+		}
+	}
+	function ajouterChampImage( event ){
+		var el = document.querySelector( ".image" )
+			i = document.querySelectorAll( ".image .content" )
+
+		if( i.length < 5 ){
+			copy = i[ 0 ].cloneNode( true )
+			el.appendChild( copy )
+		}
+	}
+
+	// GEO LOCATING ( OS ) IFRAME :: event need to be called once, from javascript
+	var onload_counter = 0
+	function actualiseOSM( position ){
+		onload_counter = 0
+		initOSM( position )
+	}
+
+	function initOSM( position ){
+		if( arguments.length === 1 ){
+			lat = position.coords.latitude
+			lng = position.coords.longitude
+		}
+
+		// feed hidden fields
+		document.querySelector( "#latitude" ).value = lat
+		document.querySelector( "#longitude" ).value = lng
+
+		if( onload_counter === 0 ){
+			var osm = document.querySelector( "#OSM" ),
+			o_width = osm.getBoundingClientRect().width + "px"
+			/* lng = coords ? coords.lng : 2,
+			lat = coords ? coords.lat : 48 */
+
+			osm.src = "http://cartosm.eu/map?lon=" + lng + "&lat=" + lat + "&zoom=16&width=" + o_width + "&height=350&mark=true&nav=true&pan=true&zb=inout&style=default&icon=down"	
+			osm.width = "100%"
+			onload_counter++
+		}
+	}
+
+	function getPosition( event, f ){
+		navigator.geolocation.getCurrentPosition( f )
+	}

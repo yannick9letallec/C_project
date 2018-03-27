@@ -1,4 +1,3 @@
-///////////////////////////////////////////////////////////////////////////////////////
 // imports
 let util = require( "util" )
 let f = require( "fs" )
@@ -6,11 +5,12 @@ let path = require( "path" )
 let http = require( "http" )
 let crypto = require( "crypto" )
 let cookies = require( "cookie-parser" )
+let sanitize = require( "sanitize-html" )
 
 let express = require( "express" )
 
 let multer = require( "multer" )
-let upload = multer()
+let upload = multer( { dest : "./upload/" } )
 
 let mongo_c = require( "mongodb" ).MongoClient
 
@@ -27,7 +27,7 @@ let app = express()
 app.use( cookies() )
 
 app.set( "view engine", "pug" )
-app.set( "views", [ "front/templates", "front/templates/includes", "front/templates/includes/emails" ] )
+app.set( "views", [ "front/templates", "front/templates/forms", "front/templates/validations" , "front/templates/listes", "front/templates/emails" ] )
 
 app.get( "/", ( req, res ) => {
 	console.log( "[ OK ] : On LP"  ) 
@@ -237,15 +237,95 @@ app.get( "/admin/vuePreferences", ( req, res ) => {
 app.get( "/admin/vueSalles", ( req, res ) => {
 	res.render( "vueSalles", { "title": "Confrance: Authentification" } )
 })
-
-app.get( "/admin/ajouterSalle", ( req, res ) => {
+app.get( "/admin/ajouterSalle", upload.single(), ( req, res ) => {
 	res.render( "formAjouterSalle", { data: {}, "title": "Confrance: Ajouter une Salle" } )
 })
+app.post( "/admin/validAjouterSalle", upload.array( "imageSalle" ), ( req, res ) => {
+	let donne_saines = {},
+		e = 0,
+		erreur_fichier = "Le(s) fichier() envoyé(s) ne correspond(ent) pas à une image : ",
+		erreur_champ = "Certains champs comportent des erreurs : "
 
-app.post( "/admin/validAjouterSalle", upload.single(), ( req, res ) => {
-	console.log( "[ OK ] : ------- VS" ) 
-	res.send( "La salle à bien été ajoutée !" )
+	// validation cote serveur des données
+	for( let prop in req.body ){
+		if( prop === "nom" && ( req.body[ prop ] === "" || req.body[ prop ].length > 255 )){
+			erreur_champ += prop + " : est requis, moins de 255 caractères"
+		}	
+		if( prop === "nb_place" && ( req.body[ prop ] === "" || /\d*/.test( req.body[ prop ] ) ) ){
+			erreur_champ += prop + " : est une valeur numérique"
+		}	
+		if( prop === "description" && ( req.body[ prop ] === "" || req.body[ prop ].length > 9999 ) ){
+			erreur_champ += prop + " : est requis, maximum 9999 caractères"
+		}	
+		console.log( "[ OK ] : " + prop + " " + sanitize( req.body[ prop], { allowedTags: [ "s", "i", "em", "b", "u", "script" ] } )) 
+		donne_saines = sanitize( req.body[ prop], { allowedTags: [ "s", "i", "em", "b", "u", "script" ] } )
+	}
+	
+	// si erreur, envoi et arret du traitement
+	if( e > 0 ) {
+		res.send( "NOM TOO BIG" )
+		return false
+	}
+
+	// traitement specific si images
+	if( req.files ){
+		l = req.files.length
+		req.body.images = []
+		for( var i = 0; i < l; i++ ){
+			if( /image\/*/.test( req.files[ i ].mimetype )){
+				f.renameSync( "./upload/" + req.files[ i ].filename, "./upload/salles/" + req.files[ i ].originalname )
+				req.body.images.push( req.files[ i ].originalname )
+			} else {
+				e = 1
+				erreur_fichier += " / " + req.files[ i ].originalname
+			}
+		}
+	} 
+
+	// si aucune erreur detectée, insertion en base de donnée
+	if( e === 0 ){
+		mongo_c.connect( "mongodb://C_project:C_project@127.0.0.1:27017/C_project", ( error, db ) => {
+			if( error ) console.log( "[ KO ] : " + util.inspect( error, { depth: null, showHidden: true } ) )
+
+			let dbo = db.db( "C_project" )
+
+			dbo.collection( "salles" ).insertOne( req.body, ( error, results ) => {
+				if( error ) console.log( "[ KO ] : " + util.inspect( error, { depth: null, showHidden: true } ) )
+					res.send( "La salle à bien été ajoutée !" )
+			} )  
+		} )
+	} else {
+		res.send( error )
+	}
 })
+app.post( "/admin/supprimerSalle", upload.single( 'image' ), ( req, res ) => {
+	//res.render( "formAjouterSalle", { data: {}, "title": "Confrance: Ajouter une Salle" } )
+})
+
+app.post( "/admin/codePostalVersAdresses", upload.single(), ( req, res ) => {
+	mongo_c.connect( "mongodb://C_project:C_project@127.0.0.1:27017/C_project", ( error, db ) => {
+		if( error ) console.log( "[ KO ] : " + util.inspect( error, { depth: null, showHidden: true } ) )
+
+		let cp = req.body.cp
+		let dbo = db.db( "C_project" )
+
+		var _regex = new RegExp( "^" + cp + ".*" )
+		console.log( "REGEXP : " + _regex ) 
+
+		dbo.collection( "code_postaux" ).find( { code_postal: { $regex: _regex } } ).limit( 6 ).toArray( ( error, results ) => {
+			if( error ) console.log( "[ KO ] : " + util.inspect( error, { depth: null, showHidden: true } ) )
+
+				let r = results.length
+				if( r === 0 ){
+					res.send( { msg: "Merci de renseigner un code postal valide" } )
+				} else {
+					console.dir( results ) 	
+					res.send( results )	
+				} 
+		} )
+	} )
+})
+
 
 app.get( "/admin/accountValidation/:hash", ( req, res ) => {
 
