@@ -50,7 +50,6 @@ html
 		}
 
 		function displayCreateAccountForm( ){
-
 			var xhr = new XMLHttpRequest()
 
 			xhr.onreadystatechange = function( event ){
@@ -63,8 +62,8 @@ html
 				}
 			}
 
-			xhr.open( "get", "/admin/createAccount", true )
-			xhr.send( null )
+			xhr.open( "GET", "/admin/Utilisateur", true )
+			xhr.send( )
 		}
 
 		function cancelCreateAccountForm( ){

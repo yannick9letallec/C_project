@@ -3,8 +3,7 @@ include ./blocks/adminHead.pug
 .admin
 	.adminHeader
 		h1 Confrance
-		.
-			Votre source de connaissance
+		| Votre source de connaissance
 
 		span.deconnexion( onclick="javascript:disconnect();" ) Déconnexion
 
@@ -77,18 +76,6 @@ script( type="text/javascript" ).
 	// SALLES
 	//-/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
-	function ajouterSalle( event ){
-		var xhr = new XMLHttpRequest()
-		
-		xhr.onreadystatechange = function( event ){
-			if( this.status === 200 && this.readyState === 4 ) {
-				document.querySelector( ".contenu" ).innerHTML = this.responseText
-			}
-		}
-
-		xhr.open( "GET", "/admin/ajouterSalle", true )
-		xhr.send()
-	}
 	function validAjouterSalle( event ){
 		event.preventDefault()
 
@@ -97,6 +84,7 @@ script( type="text/javascript" ).
 
 		fd.append( "latitude", document.querySelector( "#latitude" ).value )
 		fd.append( "longitude", document.querySelector( "#longitude" ).value )
+		fd.append( "pays", document.querySelector( "#pays" ).placeholder )
 
 		var xhr = new XMLHttpRequest()
 		
@@ -106,16 +94,51 @@ script( type="text/javascript" ).
 			}
 		}
 
-		xhr.open( "POST", "/admin/validAjouterSalle", true )
+		xhr.open( "POST", "/admin/salle", true )
 		xhr.setRequestHeader( "Upgrade-Insecure-Requests", 0 )
 
 		xhr.send( fd )
 	}
-	function supprimerSalle( id_salle ){
-
-	}
 	function checkNomSalle( nom ){
 
+	}
+	function ajouterChampImage( event ){
+		var el = document.querySelector( ".image" )
+			i = document.querySelectorAll( ".image .content" )
+
+		if( i.length < 5 ){
+			copy = i[ 0 ].cloneNode( true )
+			el.appendChild( copy )
+		}
+	}
+	function ajouterChampLivre( event ){
+		var el = document.querySelector( ".livre" )
+			i = document.querySelectorAll( ".livre .content" )
+
+		if( i.length < 5 ){
+			copy = i[ 0 ].cloneNode( true )
+			el.appendChild( copy )
+		}
+	}
+
+
+	// GENERIQUE
+	//-/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	function gererElement( event, action, verbe, id_element ){
+		var xhr = new XMLHttpRequest()
+
+		xhr.onreadystatechange = function( event ){
+			if( this.readyState === 4 && this.status === 200 ){
+				console.log( "[ OK ] : ACTION TAKEN " + this.responseText ) 
+				document.querySelector( ".contenu" ).innerHTML = this.responseText
+			}
+		}
+
+		xhr.open( verbe, "/admin/" + action, true )
+		xhr.setRequestHeader( "content-type", "text/plain" )
+
+		xhr.send( id_element ? id_element : null )
 	}
 	function chercherVilleDepuisCodePostal( event ){
 		var autocomplete = document.querySelector( ".autocomplete" ) 
@@ -185,17 +208,10 @@ script( type="text/javascript" ).
 			xhr.send( data )
 		}
 	}
-	function ajouterChampImage( event ){
-		var el = document.querySelector( ".image" )
-			i = document.querySelectorAll( ".image .content" )
 
-		if( i.length < 5 ){
-			copy = i[ 0 ].cloneNode( true )
-			el.appendChild( copy )
-		}
-	}
-
-	// GEO LOCATING ( OS ) IFRAME :: event need to be called once, from javascript
+	// GEOLOCATION
+	//-/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var onload_counter = 0
 	function actualiseOSM( position ){
 		onload_counter = 0

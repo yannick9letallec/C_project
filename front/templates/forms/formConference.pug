@@ -1,0 +1,57 @@
+.creationElement
+	.title= title
+		
+	form( action="/admin/conference" enctype="multipart/form-data" accept-charset="utf-8" method="post" name="formConference" target="_self" autocomplete="off" onsubmit="javascript:validAjouterConference( event );" )
+		.nom 
+			label( for="nom" ) *Nom : 
+			input( value=data.nom type="text" id="nom" name="nom" placeholder="Nom de la salle ... " onchange="checkNomSalle( this )" required autofocus )
+		.numero
+			label( for="numero" ) Numéro de voie : 
+			input( value=data.numero type="text" id="numero" name="numero" )
+		.type_voie
+			label( for="type_voie" ) Type de voie : 
+			select( id="type_voie" name="type_voie" )
+				// each role in roles option( type="checkbox" id="role" name=role )
+		.libelle_supplementaire
+			label( for="libelle_supplementaire" ) *Libellé Supplémentaire : 
+			input( value=data.libelle_supplementaire type="text" id="libelle_supplementaire" name="libelle_supplementaire" placeholder="Ex : Bâtiment C / Résidence des Ajoncs ... " )
+		.code_postal 
+			label( for="code_postal" ) *Code Postal : 
+			input( value=data.code_postal type="number" id="code_postal" name="code_postal" autocomplete="off" onchange="" oninput="javascript:chercherVilleDepuisCodePostal( this );" )
+		.ville 
+			label( for="ville" ) *Ville : 
+			input( value=data.ville type="text" id="ville" name="ville"  )
+		.pays
+			label( for="pays" ) Pays : 
+			input( value=data.pays type="text" id="pays" name="pays" placeholder="FRANCE" disabled )
+	
+		.image
+			label( for="image" ) Image : 
+			input( value=data.image type="file" id="image" name="image" placeholder="choisissez votre image" )
+
+		.nb_place
+			label( for="nb_place" ) Pays : 
+			input( value=data.nb_place type="number" id="nb_place" name="nb_place" )
+
+		.description
+			textarea( placeholder="Ici, décrivez la conférence à venir" )
+
+		.web
+			label( for="web" ) Lien Canonique ( url de référence ) : 
+			input( value=data.web type="text" id="web" name="web" placeholder="http://..." )
+			.twitter
+				label( for="twitter" ) Twitter : 
+				input( value=data.twitter type="text" id="twitter" name="twitter" placeholder="Votre page twitter" )
+		
+		.date
+			label( for="date" ) Date : 
+			input( value=data.date type="text" id="date" name="date" )
+		.horaire
+			label( for="horaire" ) Horaire : 
+			input( value=data.horaire type="text" id="horaire" name="horaire" )
+		.map
+			iframe( id="OSM" width="100%" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" onload="javascript:getPosition( event, initOSM );" )
+		.submitAdminForm
+			input( type="submit" id="formConference" value="Ajouter" )
+
+

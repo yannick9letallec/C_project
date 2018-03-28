@@ -1,0 +1,65 @@
+.creationElement
+	.title= title
+		
+	form( action="/admin/conferencier" enctype="multipart/form-data" accept-charset="utf-8" method="post" name="formConferencier" target="_self" autocomplete="off" onsubmit="javascript:validAjouterConferencier( event );" )
+		.nom 
+			label( for="nom" ) *Nom : 
+			input( value=data.nom type="text" maxlength="255" id="nom" name="nom" placeholder="Nom du conférencier ... " onchange="checkNomSalle( this )" required autofocus )
+		.contacts
+			.telephone
+				label( for="telephone" ) Numéro de telephone: 
+				input( value=data.telephone type="text" id="telephone" name="telephone"  required )
+			.email
+				label( for="email" ) Email : 
+				input( value=data.email type="text" id="email" name="email" required )
+	
+		// @todo afficher les images existantes
+		.image
+			span( onclick="javascript:ajouterChampImage();" )
+				| + 
+			.content
+				label( for="image" ) Image : 
+				input( value=data.image type="file" id="image" name="image" placeholder="choisissez votre image" )
+
+		.nb_place
+			label( for="nb_place" ) Nombre de places : 
+			input( value=data.nb_place type="number" id="nb_place" name="nb_place" required )
+
+		.description
+			label( for="description" ) Description :
+				textarea( id="description" name="description" placeholder="Ici, décrivez le conférencier, son parcours, son expertise, ses spécificitées ... " required )= data.description
+
+		.web
+			label( for="web" ) Lien Internet : 
+			input( value=data.web type="text" id="web" name="web" placeholder="http://..." )
+			.site_web
+				label( for="site_web" ) Site internet : 
+				input( value=data.site_web type="text" id="site_web" name="site_web" placeholder="Votre site internet" )
+			.facebook
+				label( for="facebook" ) Facebook : 
+				input( value=data.facebook type="text" id="facebook" name="facebook" placeholder="Votre page facebook" )
+			.twitter
+				label( for="twitter" ) Twitter : 
+				input( value=data.twitter type="text" id="twitter" name="twitter" placeholder="Votre page twitter" )
+		
+
+		.livre
+			span( onclick="javascript:ajouterChampLivre();" )
+				| + 
+			.content
+				label( for="livre" ) Titre : 
+				input( value=data.livre type="text" id="livre" name="livre" placeholder="Titre du livre" )
+				label( for="isbn" ) ISBN : 
+				input( value=data.isbn type="text" id="isbn" name="isbn" placeholder="N° ISBN de l'ouvrage" )
+				label( for="lien" ) Page Web : 
+				input( value=data.lien type="text" id="lien" name="lien" placeholder="Lien web de l'ouvrage" )
+
+		.info_complementaires
+			case action
+				when "modifier"
+					| Les modifications seront effectives après validation
+				when "ajouter"	
+					| La salle ajoutée sera soumise à validation. Ensuite, elle sera considérée comme donnée publique, vous pourrez simplement proposer de la supprimer ou de la modifier.
+
+		.submitAjouterSalleForm
+			input( type="submit" id="formConferencier" value=action )

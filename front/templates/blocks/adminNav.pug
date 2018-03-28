@@ -1,16 +1,13 @@
 .adminNav
-	.compteUtilisateur( onclick="javascript:openVue( 'vueCompteUtilisateur' );" ).
-		Mon Compte
-	.ajoutezSalle( onclick="javascript:openVue( 'vueSalles' );" ).
-		Gérez vos salle 
-	.ajoutezConferance( onclick="javascript:openVue( 'vueAjoutConference' );" ).
-		Ajoutez une Conférence
-	.reglezPreferences( onclick="javascript:openVue( 'vuePreferences' );" ).
-		Réglez vos Préférences
+	.compteUtilisateur( onclick="javascript:ouvrirVue( 'vueCompteUtilisateur' );" )  Mon Compte
+	.ajoutezSalle( onclick="javascript:ouvrirVue( 'salles' );" )  Mes salles 
+	.ajoutezConferance( onclick="javascript:ouvrirVue( 'conferences' );" ) Mes Conférences
+	.ajoutezConferance( onclick="javascript:ouvrirVue( 'conferenciers' );" ) Mes Conférenciers
+	.reglezPreferences( onclick="javascript:ouvrirVue( 'preferences' );" ) Mes Préférences
 
 
 script( type="text/javascript" ).
-	function openVue( vue ){
+	function ouvrirVue( vue ){
 		var xhr = new XMLHttpRequest( vue )
 	
 		var path = "/admin/" + vue
